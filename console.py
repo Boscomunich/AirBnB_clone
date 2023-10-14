@@ -3,9 +3,15 @@
 BaseModel class that defines all common attributes/methods for other classes
 """
 import cmd
-import shlex
-from models.base_model import BaseModel
 from models import storage
+import shlex as sh
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from re import search
 
 
@@ -93,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
-        args_list = shlex.split(arg[:])
+        args_list = sh.split(arg[:])
         arg = arg.split()
         if len(args_list) == 0:
             print("** class name missing **")
