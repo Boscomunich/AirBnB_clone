@@ -44,6 +44,21 @@ class BaseModel:
         """"This method returns a string of object"""
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, self.__dict__)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)	
+					
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the instance.
+
+        Returns:
+            str: String of the instance.
+        """
+        return ("[{}]({}){}".format(self.__class__,
+                                    self.id, self.__dict__))
 
     def save(self):
         """Save method that updates the public instance attribute"""
