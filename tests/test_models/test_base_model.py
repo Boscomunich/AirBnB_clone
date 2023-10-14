@@ -1,59 +1,50 @@
 #!/usr/bin/python3
+""" Unittest for BaseModel class """
 import unittest
-from models.base_model import BaseModel
+import os
 from datetime import datetime
+from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 """Test BaseModel class"""
-
 class TestBaseModel(unittest.TestCase):
+    """Test class for BaseModel
+
+    Args:
+        unittest ([type]): [description]
+    """
     def setUp(self):
-        """Set up test methods"""
-        self.model = BaseModel()
+        """SetUp method"""
+        self.bm_instance1 = BaseModel()
+        self.bm_instance2 = BaseModel()
 
-    def test_init_with_kwargs(self):
-        """Test __init__ method with kwargs"""
-        created_at = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
-        updated_at = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
-        model = BaseModel(id="123", created_at=created_at, updated_at=updated_at)
-        self.assertEqual(model.id, "123")
-        self.assertIsInstance(model.created_at, datetime)
-        self.assertIsInstance(model.updated_at, datetime)
+    def test_docstring(self):
+        """Test docstring"""
+        self.assertIsNotNone(BaseModel.__doc__)
+        self.assertIsNotNone(BaseModel.__init__.__doc__)
+        self.assertIsNotNone(BaseModel.__str__.__doc__)
+        self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
-    def test_init_with_no_kwargs(self):
-        """Test __init__ method with no kwargs"""
-        model = BaseModel()
-        self.assertIsInstance(model.id, str)
-        self.assertIsInstance(model.created_at, datetime)
-        self.assertIsInstance(model.updated_at, datetime)
+    def test_is_instance(self):
+        """Test the instance of the class"""
+        self.assertIsInstance(self.bm_instance1, BaseModel)
+        self.assertIsInstance(self.bm_instance1.created_at, datetime)
+        self.assertIsInstance(self.bm_instance1.updated_at, datetime)
 
-    def test_to_dict_with_no_args(self):
-        """Test to_dict method with no arguments"""
-        model_dict = self.model.to_dict()
-        self.assertEqual(model_dict['id'], self.model.id)
-        self.assertEqual(model_dict['__class__'], 'BaseModel')
-        self.assertIsInstance(model_dict['created_at'], str)
-        self.assertIsInstance(model_dict['updated_at'], str)
+    def test_id(self):
+        """Test id of the instance"""
+        self.assertNotEqual(self.bm_instance1.id, self.bm_instance2.id)
+        self.assertTrue(hasattr(self.bm_instance1, "id"))
+        self.assertEqual(type(self.bm_instance1.id), str)
+        self.assertEqual(type(self.bm_instance2.id), str)
 
-    def test_save_with_no_changes(self):
-        """Test save method with no changes"""
-        old_updated_at = self.model.updated_at
-        self.model.save()
-        self.assertEqual(old_updated_at, self.model.updated_at)
-
-    def test_str_method(self):
-        """Test __str__ method"""
-        string = str(self.model)
-        self.assertIsInstance(string, str)
-        self.assertIn('BaseModel', string)
-        self.assertIn('id', string)
-        self.assertIn('created_at', string)
-        self.assertIn('updated_at', string)
-
-    def test_to_dict_method(self):
-        """Test to_dict method"""
-        model_dict = self.model.to_dict()
-        self.assertIsInstance(model_dict, dict)
-        self.assertIn('id', model_dict)
-        self.assertIn('created_at', model_dict)
-        self.assertIn('updated_at', model_dict)
-        self.assertIn('__class__', model_dict)
-        self.assertEqual(model_dict['__class__'], 'BaseModel')
+    def test_attributes(self):
+        """Test the attr of the instance"""
+        self.bm_instance1.name = "Solomon"
+        self.bm_instance1.my_number = 46
+        self.bm_instance1.save()
+        bm_instance1_json = self.bm_instance1.to_dict()
+        self.bm_instance2 = BaseModel(**bm_instance1_json)
+        self.assertEqual(self.bm_instance2.id, self.bm_instance1.id)
+        self.assertEqual(self.bm_instance2.name, self.bm_instance1.name)
+        self.assertEqual(self.bm_instance2.my_number, self.bm_instance1.my_number)

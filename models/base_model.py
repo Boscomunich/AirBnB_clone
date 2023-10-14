@@ -1,73 +1,60 @@
 #!/usr/bin/python3
-"""Module for BaseModel class of AirBnB"""
-from uuid import uuid4
+"""
+BaseModel class that defines all common attributes/methods for other classes
+"""
+import uuid
 from datetime import datetime
-from models import storage
+import models
+import json
+time_format = "%Y-%m-%dT%H:%M:%S.%f"
+
 
 class BaseModel:
     """
-    The BaseModel class for AirBnB project.
-
-    Class Attributes:
-        id(str): unique id of the instance.
-        created_at(datetime): datetime object the instance was created.
-        updated_at(datetime): datetime object the instance was updated.
+        BaseModel: The base or parent class for all the classes
+        Features:
+        id - the unique identification of the object
+        created_at - the datetime in which the object was created
+        updated_at - the datetime in which the object was modified
     """
     def __init__(self, *args, **kwargs):
         """
-        Initializes a new instance of BaseModel.
-
-        Args:
-            *args: argument list.
-            **kwargs: keyworded arguments.
-        Note: args not used.
+        Initialization of the base model class
+            id - the unique identification of the object
+            created_at - the datetime in which the object was created
+            updated_at - the datetime in which the object was modified
         """
-        if kwargs:
+        if kwargs is None or len(kwargs) == 0:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            models.storage.new(self)
+        else:
             for key, value in kwargs.items():
                 if key == "id":
                     self.id = value
                 elif key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                    self.__dict__[key] = datetime.strptime(value, time_format)
+                elif key == "__class__":
+                    pass
                 elif key != "__class__":
-                    setattr(self, key, value)
+                    self.__dict__[key] = value
 
-        else:
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-	    storage.new(self)	
-					
-    def __str__(self) -> str:
-        """
-        Returns a string representation of the instance.
-
-        Returns:
-            str: String of the instance.
-        """
-        return ("[{}]({}){}".format(self.__class__,
-                                    self.id, self.__dict__))
+    def __str__(self):
+        """"This method returns a string of object"""
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
-        """
-        Updates the updated_at attr with the current date and time.
-        """
+        """Save method that updates the public instance attribute"""
         self.updated_at = datetime.now()
-	storage.save()
+        models.storage.save()
 
     def to_dict(self):
-            """
-            Returns a dictionary representation of the instance.
-
-            This method returns a dictionary containing all the attr of the instance.
-            The dictionary can be used to recreate the instance using the
-            keyword args and serializes datetime objects to ISO format.
-
-            Returns:
-                dict: A dictionary containing all the attr of the instance.
-            """
-            new_obj_dict = self.__dict__.copy()
-            new_obj_dict["__class__"] = self.__class__.__name__
-            new_obj_dict["created_at"] = self.created_at.isoformat()
-            new_obj_dict["updated_at"] = self.created_at.isoformat()
-            return (new_obj_dict)
-
+        """This method returns a dictionary containing all keys/values
+        of __dict__ of the instance"""
+        new_obj_dict = self.__dict__.copy()
+        new_obj_dict["__class__"] = self.__class__.__name__
+        new_obj_dict["created_at"] = self.created_at.isoformat()
+        new_obj_dict["updated_at"] = self.updated_at.isoformat()
+        return new_obj_dict
