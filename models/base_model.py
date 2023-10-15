@@ -42,8 +42,8 @@ class BaseModel:
 
     def __str__(self) -> str:
         """This method returns a string of object"""
-        return ("[{}] ({}) {}".format(self.__class__.__name__,
-                                     self.id, self.__dict__))
+        return ("[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__))
 
     def save(self):
         """Save method that updates the public instance attribute"""

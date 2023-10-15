@@ -11,17 +11,17 @@ for obj_id in all_objs.keys():
 
 print("-- Create a new User --")
 my_user = User()
-my_user.first_name = "Betty"
-my_user.last_name = "Bar"
-my_user.email = "airbnb@mail.com"
-my_user.password = "root"
+my_user.first_name = "Solomon"
+my_user.last_name = "Odunusi"
+my_user.email = "solomon@gmail.com"
+my_user.password = "rooot"
 my_user.save()
 print(my_user)
 
 print("-- Create a new User 2 --")
 my_user2 = User()
-my_user2.first_name = "John"
-my_user2.email = "airbnb2@mail.com"
+my_user2.first_name = "Bosco"
+my_user2.email = "Bosco@gmail.com"
 my_user2.password = "root"
 my_user2.save()
 print(my_user2)

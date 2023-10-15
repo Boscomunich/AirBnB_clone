@@ -27,6 +27,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """Quit cmd to exit the console"""
         return True
+
     def do_EOF(self, line):
         """EOF cmd to exit the console"""
         return True
@@ -48,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, arg):
-        """Shows the string of an instance 
+        """Shows the string of an instance
         based on the class name and id"""
         args_list = arg.split()
         if args_list[0] == "":
