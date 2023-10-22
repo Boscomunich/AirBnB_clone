@@ -1,0 +1,64 @@
+/*
+ * === Filters class style ===
+ */
+
+/* Filters style */
+.filters {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 70px;
+    width: 100%;
+  }
+  
+  /* Search button style */
+  .filters button {
+    background: #ff5a5f;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    float: right;
+    font-size: 18px;
+    height: 48px;
+    margin: 12px 30px;
+    width: 20%;
+  }
+  
+  /* Search button hover opacity */
+  .filters button:hover {
+    background-color: rgba(255, 90, 95, .9);
+  }
+
+/* Locations and amenities style */
+.locations,
+.amenities {
+  display: inline-block;
+  height: 100%;
+  width: 25%;
+  text-align: start;
+}
+
+/* Locations border */
+.locations {
+    margin-left: 50px;
+    border-right: 1px solid #ddd;
+  }
+  
+/* Amenities border */
+.amenities {
+    margin-right: 90px;
+  }
+
+/* Locations and amenities text */
+.locations h3,
+.amenities h3 {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.locations h4,
+.amenities h4 {
+  margin-top: 0;
+  font-weight: 400;
+  font-size: 14px;
+}  
